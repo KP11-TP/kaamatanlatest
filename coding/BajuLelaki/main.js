@@ -1,5 +1,5 @@
 // Import necessary objects and libraries
-const THREE = window.WINDAR.IMAGE.THREE;
+const THREE = window.MINDAR.IMAGE.THREE;
 
 // Function to create a YouTube player
 const createYoutube = () => {
