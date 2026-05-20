@@ -12,7 +12,7 @@ const createYoutube = () => {
 
     const onYouTubeIframeAPIReady = () => {
       const player = new YT.Player('player', {
-        videoId: 'rMwpbRtx4KQ',
+        videoId: 'Fs3xR-ihuMU',
         events: {
           onReady: () => {
             resolve(player);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create a MindARThree instance with the specified container and image target source
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
       container: document.body,
-      imageTargetSrc: '../../assets/targets/BajuPerempuan.mind',
+      imageTargetSrc: '../../assets/targets/Gong.mind',
     });
 
     // Extract the renderer, CSS renderer, scene, CSS scene, and camera from the MindARThree instance
