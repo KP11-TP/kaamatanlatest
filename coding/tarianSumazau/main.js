@@ -1,45 +1,69 @@
-const THREE = window.MINDAR.IMAGE.THREE;
+// Import necessary objects and libraries
+import { CSS3DObject } from '../../libs/three.js-r132/examples/jsm/renderers/CSS3DRenderer.js';
+const mindarThree = new window.MINDAR.IMAGE.MindARThree(...);
 
-document.addEventListener('DOMContentLoaded', async () => {
+// Function to create a YouTube player
+const createYoutube = () => {
+  return new Promise((resolve, reject) => {
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-  const createYoutube = () => {
-    return new Promise((resolve) => {
-      const tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-
-      window.onYouTubeIframeAPIReady = () => {
-        const player = new YT.Player('player', {
-          videoId: 'svFbZEhVVDg',
-          events: {
-            onReady: () => resolve(player)
+    const onYouTubeIframeAPIReady = () => {
+      const player = new YT.Player('player', {
+        videoId: 'svFbZEhVVDg',
+        events: {
+          onReady: () => {
+            resolve(player);
           }
-        });
-      };
+        }
+      });
+    }
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+  });
+}
+
+// Wait for the DOM content to be fully loaded before executing the code
+document.addEventListener('DOMContentLoaded', () => {
+  // Define an asynchronous function to start the AR experience
+  const start = async () => {
+    // Create a YouTube player using the createYoutube function
+    const player = await createYoutube();
+
+    // Create a MindARThree instance with the specified container and image target source
+    const mindarThree = new window.MINDAR.IMAGE.MindARThree({
+      container: document.body,
+      imageTargetSrc: '../../assets/targets/tarianSumazau.mind',
     });
-  };
 
-  const player = await createYoutube();
+    // Extract the renderer, CSS renderer, scene, CSS scene, and camera from the MindARThree instance
+    const { renderer, cssRenderer, scene, cssScene, camera } = mindarThree;
 
-  const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-    container: document.body,
-    imageTargetSrc: '../../assets/targets/tarianSumazau.mind',
-  });
+    // Create a CSS3DObject from an HTML element with the ID "ar-div"
+    const obj = new CSS3DObject(document.querySelector("#ar-div"));
 
-  const { renderer, cssRenderer, cssScene, camera } = mindarThree;
+    // Add a CSS anchor to the MindARThree instance and attach the CSS3DObject to it
+    const cssAnchor = mindarThree.addCSSAnchor(0);
+    cssAnchor.group.add(obj);
 
-  const obj = new CSS3DObject(document.querySelector("#ar-div"));
+    // Define actions when the AR target is found and lost
+    cssAnchor.onTargetFound = () => {
+      player.playVideo();
+    }
+    cssAnchor.onTargetLost = () => {
+      player.pauseVideo();
+    }
 
-  const anchor = mindarThree.addCSSAnchor(0);
-  anchor.group.add(obj);
+    // Start the MindARThree AR experience
+    await mindarThree.start();
 
-  anchor.onTargetFound = () => player.playVideo();
-  anchor.onTargetLost = () => player.pauseVideo();
+    // Set up a rendering loop using the CSS renderer to continuously render the CSS scene
+    renderer.setAnimationLoop(() => {
+      cssRenderer.render(cssScene, camera);
+    });
+  }
 
-  await mindarThree.start();
-
-  renderer.setAnimationLoop(() => {
-    cssRenderer.render(cssScene, camera);
-  });
-
+  // Call the start function to begin the AR experience when the DOM content is fully loaded
+  start();
 });
