@@ -1,6 +1,5 @@
 // Import necessary objects and libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.module.js';
-import { CSS3DObject } from 'https://cdn.jsdelivr.net/npm/three@0.132.2/examples/jsm/renderers/CSS3DRenderer.js';
+const THREE = window.WINDAR.IMAGE.THREE;
 
 // Function to create a YouTube player
 const createYoutube = () => {
