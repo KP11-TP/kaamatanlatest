@@ -12,7 +12,10 @@ const createYoutube = () => {
 
     const onYouTubeIframeAPIReady = () => {
       const player = new YT.Player('player', {
-        videoId: 'Fs3xR-ihuMU',
+        videoId: 'P_DxID-63H4',
+        width: 1024,
+        height: 576,
+        playerVars: { playsinline: 1, rel: 0 },
         events: {
           onReady: () => {
             resolve(player);
@@ -34,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create a MindARThree instance with the specified container and image target source
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
       container: document.body,
-      imageTargetSrc: '../../assets/targets/Gong.mind',
+      imageTargetSrc: '../../assets/targets/Hinava.mind',
     });
 
     // Extract the renderer, CSS renderer, scene, CSS scene, and camera from the MindARThree instance
@@ -48,11 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
     cssAnchor.group.add(obj);
 
     // Define actions when the AR target is found and lost
+    const arDiv = document.querySelector('#ar-div');
     cssAnchor.onTargetFound = () => {
-      player.playVideo();
+      if(arDiv) arDiv.style.visibility = 'visible';
+      try { player.playVideo(); } catch(e) { }
     }
     cssAnchor.onTargetLost = () => {
-      player.pauseVideo();
+      if(arDiv) arDiv.style.visibility = 'hidden';
+      try { player.pauseVideo(); } catch(e) { }
     }
 
     // Start the MindARThree AR experience
