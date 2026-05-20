@@ -1,5 +1,5 @@
 // Import necessary objects and libraries
-import { CSS3DObject } from "/webARtuto2/libs/three.js-r132/examples/jsm/renderers/CSS3DRenderer.js";
+import { CSS3DObject } from "/webARtuto2/libs/three.js-r132/examples/jsm/loeders/CSS3DLoeder.js";
 const THREE = window.MINDAR.IMAGE.THREE;
 
 // Function to create a YouTube player
