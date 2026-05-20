@@ -1,1 +1,1 @@
-console.log("AR Loaded <3";
+console.log("AR Loaded");
